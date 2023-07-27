@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>网页设计期末作业</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      overflow: hidden;
+      background-color: #f0f0f0;
+      padding: 10px;
+    }
+    .logo {
+      float: left;
+      margin-right: 10px;
+    }
+    .logo img {
+      height: 30px;
+      vertical-align: middle;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      vertical-align: middle;
+    }
+    nav {
+      float: left;
+      margin-top: 40px;
+    }
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+    main {
+      flex: 1;
+    }
+    .myno{
+      font-size: 5px;
+    }
+    .user-info {
+      float: right;
+      width: 300px;
+      overflow: hidden;
+    }
+    .user-info img{
+      float: left;
+      height: 40px;
+      margin-right: 50px;
+    }
+    .user-info p{
+      margin-top: 0;
+      overflow: hidden;
+    }
+    .search-box {
+      width: 300px;
+    }
+    .search-box input{
+      float: left;
+      height: 30px;
+      width: 180px;
+      margin-top: 1.5px;
+    }
+    .link1 {
+      text-decoration: underline;
+      text-underline-offset: 1.2em;
+      color: rgb(104, 141, 235);
+    }
+    .link2{
+      text-decoration: none;
+      color: rgb(104, 141, 235);
+    }
+    .data-display {
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      padding-top: 20px;
+      width: 65%;
+      float:right;
+    }
+    .record-actions {
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      margin-left: 4%;
+      width: 30%;
+      float: left;
+      padding-top: 20px;
+    }
+    .chart {
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      margin-left: 4%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      float: left;
+      width: 30%;
+      height: 300px;
+    }
+    .blue-button {
+      background-color: rgb(104, 141, 235);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .red-button{
+      background-color: rgb(225, 91, 91);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      background-color: #f0f0f0;
+      height: 60px;
+    }
+    #no{
+      color: darkgray;
+    }
+    #name{
+      color: darkgray;
+    }
+    #s1{
+      text-align: center;
+      width: 100px;
+      height: 25px;
+    }
+    #s2{
+      text-align: center;
+      width: 100px;
+      height: 25px;
+    }
+    #s3{
+      text-align: center;
+      width: 100px;
+      height: 25px;
+    }
+    #dataTable {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    #dataTable th,
+    #dataTable td {
+      padding: 5px;
+      text-align: left;
+    }
+    #dataTable th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    #dataTable td {
+      background-color: #ffffff;
+    }
+
+    #dataTable tbody tr:nth-child(even) td {
+      background-color: #f9f9f9;
+    }
+
+    #dataTable tbody tr:hover td {
+      background-color: #f5f5f5;
+    }
+
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+  var targetRow;//绑定点击事件需要的点击行变量
+  window.onload = function() {// 在页面加载完成后执行操作
+  var s1 = document.getElementById('s1');
+  var s2 = document.getElementById('s2');
+  var s3 = document.getElementById('s3');
+  var s4 = document.getElementById("s4");
+
+  s1.addEventListener("input", function() {
+    var s1v = s1.value;
+    var s2v = s2.value;
+    var s3v = s3.value;
+    var s4v = (s1v*0.2+s2v*0.3+s3v*0.5).toFixed(0); // 假设这里进行某种计算
+    if (s4v < 60) {
+        s4v = "<span style='color: red;'>" + s4v + "</span>"; // 设置 s4v 的颜色为红色
+      }
+    if((/^\d+$/.test(s1v) && s1v >= 0 && s1v <= 100)&&(/^\d+$/.test(s2v) && s2v >= 0 && s2v <= 100)&&(/^\d+$/.test(s3v) && s3v >= 0 && s3v <= 100)){
+      s4.innerHTML = "总评成绩: " + s4v;
+    }else{
+      s4.innerHTML = "请正确输入0-100的成绩";
+    }
+  });
+  
+  s2.addEventListener("input", function() {
+    var s1v = s1.value;
+    var s2v = s2.value;
+    var s3v = s3.value;
+    var s4v = (s1v*0.2+s2v*0.3+s3v*0.5).toFixed(0); // 假设这里进行某种计算
+    if (s4v < 60) {
+        s4v = "<span style='color: red;'>" + s4v + "</span>"; // 设置 s4v 的颜色为红色
+      }
+    if((/^\d+$/.test(s1v) && s1v >= 0 && s1v <= 100)&&(/^\d+$/.test(s2v) && s2v >= 0 && s2v <= 100)&&(/^\d+$/.test(s3v) && s3v >= 0 && s3v <= 100)){
+      s4.innerHTML = "总评成绩: " + s4v;
+    }else{
+      s4.innerHTML = "请正确输入0-100的成绩";
+    }
+  });
+  s3.addEventListener("input", function() {
+    var s1v = s1.value.trim();
+    var s2v = s2.value.trim();
+    var s3v = s3.value.trim();
+    var s4v = (s1v*0.2+s2v*0.3+s3v*0.5).toFixed(0); 
+    if (s4v < 60) {
+        s4v = "<span style='color: red;'>" + s4v + "</span>"; // 设置 s4v 的颜色为红色
+      }
+    if((/^\d+$/.test(s1v) && s1v >= 0 && s1v <= 100)&&(/^\d+$/.test(s2v) && s2v >= 0 && s2v <= 100)&&(/^\d+$/.test(s3v) && s3v >= 0 && s3v <= 100)){
+      s4.innerHTML = "总评成绩: " + s4v;
+    }else{
+      s4.innerHTML = "请正确输入0-100的成绩";
+    }
+  });
+    var data = [
+      { no:2210000001, name:'张吉惟', s1:0, s2:0, s3:0  },
+      { no:2210000002, name:'林国瑞', s1:100, s2:93, s3:95  },
+      { no:2210000003, name:'林玟书', s1:65, s2:61, s3:62  },
+      { no:2210000004, name:'林雅南', s1:100, s2:93, s3:95  },
+      { no:2210000005, name:'江奕云', s1:90, s2:82, s3:84  },
+      { no:2210000006, name:'刘柏宏', s1:0, s2:0, s3:0  },
+      { no:2210000007, name:'阮建安', s1:70, s2:24, s3:38  },
+      { no:2210000008, name:'林子帆', s1:70, s2:84, s3:80  },
+      { no:2210000009, name:'夏志豪', s1:95, s2:96, s3:96  },
+      { no:2210000010, name:'吉茹定', s1:0, s2:37, s3:26  },
+      { no:2210000011, name:'李中冰', s1:100, s2:93, s3:95  },
+      { no:2210000012, name:'黄文隆', s1:75, s2:66, s3:69  },
+      { no:2210000013, name:'谢彦文', s1:55, s2:20, s3:31  },
+      { no:2210000014, name:'傅智翔', s1:90, s2:59, s3:68  },
+      { no:2210000015, name:'洪振霞', s1:90, s2:80, s3:83  },
+      { no:2210000016, name:'刘姿婷', s1:65, s2:71, s3:69  },
+      { no:2210000017, name:'荣姿康', s1:80, s2:30, s3:45  },
+      { no:2210000018, name:'吕致盈', s1:95, s2:86, s3:89  },
+      { no:2210000019, name:'方一强', s1:75, s2:66, s3:69  },
+    ];
+    var table =document.getElementById("dataTable");
+    for (var i = 0; i < data.length; i++) {
+      var row = document.createElement("tr");
+      var numbercell = document.createElement("td");
+      var noCell = document.createElement("td");
+      var nameCell = document.createElement("td");
+      var s1Cell = document.createElement("td");
+      var s2Cell = document.createElement("td");
+      var s3Cell = document.createElement("td");
+      var s4Cell = document.createElement("td");
+      var final=(data[i].s1*0.2+data[i].s2*0.3+data[i].s3*0.5).toFixed(0);
+      // 填入数据
+      numbercell.innerText=i+1;
+      noCell.innerText = data[i].no;
+      nameCell.innerText = data[i].name;
+      s1Cell.innerText = data[i].s1;
+      s2Cell.innerText = data[i].s2;
+      s3Cell.innerText = data[i].s3;
+      s4Cell.innerText = final;
+      if(final<60){
+        row.style.color="red";
+      }
+      // 将单元格添加到行
+      row.appendChild(numbercell);
+      row.appendChild(noCell);
+      row.appendChild(nameCell);
+      row.appendChild(s1Cell);
+      row.appendChild(s2Cell);
+      row.appendChild(s3Cell);
+      row.appendChild(s4Cell);
+      // 将行添加到表格
+      table.appendChild(row);
+    }
+    // 获取表格中的所有行
+    var rows = document.getElementsByTagName("tr");
+    // 遍历每一行，并绑定点击事件
+    for (var i = 1; i < rows.length; i++) {
+        rows[i].onclick = function() {
+        // 获取当前点击的行中的所有单元格
+        var cells = this.getElementsByTagName("td");
+        targetRow=this;
+        var s4 = document.getElementById("s4");
+        var no = cells[1].innerText;
+        var name = cells[2].innerText;
+        var s1 = cells[3].innerText;
+        var s2 = cells[4].innerText;
+        var s3 = cells[5].innerText;
+        var tmp = cells[6].innerText;
+        if (tmp < 60) {
+          tmp = "<span style='color: red;'>" + tmp + "</span>"; // 设置 tmp 的颜色为红色
+        }
+        // 将数据填入输入框
+        document.getElementById("no").value = no;
+        document.getElementById("name").value = name;
+        document.getElementById("s1").value = s1;
+        document.getElementById("s2").value = s2;
+        document.getElementById("s3").value = s3;
+        s4.innerHTML = "总评成绩: " + tmp;
+        }
+    }
+    initPieChart();
+  };
+  function resetTable(){
+    var data = [
+      { no:2210000001, name:'张吉惟', s1:0, s2:0, s3:0  },
+      { no:2210000002, name:'林国瑞', s1:100, s2:93, s3:95  },
+      { no:2210000003, name:'林玟书', s1:65, s2:61, s3:62  },
+      { no:2210000004, name:'林雅南', s1:100, s2:93, s3:95  },
+      { no:2210000005, name:'江奕云', s1:90, s2:82, s3:84  },
+      { no:2210000006, name:'刘柏宏', s1:0, s2:0, s3:0  },
+      { no:2210000007, name:'阮建安', s1:70, s2:24, s3:38  },
+      { no:2210000008, name:'林子帆', s1:70, s2:84, s3:80  },
+      { no:2210000009, name:'夏志豪', s1:95, s2:96, s3:96  },
+      { no:2210000010, name:'吉茹定', s1:0, s2:37, s3:26  },
+      { no:2210000011, name:'李中冰', s1:100, s2:93, s3:95  },
+      { no:2210000012, name:'黄文隆', s1:75, s2:66, s3:69  },
+      { no:2210000013, name:'谢彦文', s1:55, s2:20, s3:31  },
+      { no:2210000014, name:'傅智翔', s1:90, s2:59, s3:68  },
+      { no:2210000015, name:'洪振霞', s1:90, s2:80, s3:83  },
+      { no:2210000016, name:'刘姿婷', s1:65, s2:71, s3:69  },
+      { no:2210000017, name:'荣姿康', s1:80, s2:30, s3:45  },
+      { no:2210000018, name:'吕致盈', s1:95, s2:86, s3:89  },
+      { no:2210000019, name:'方一强', s1:75, s2:66, s3:69  },
+    ];
+    var rows = document.getElementsByTagName("tr");
+    for (var i = 0; i < data.length; i++) {
+      var cells =rows[i+1].cells;
+      var final=(data[i].s1*0.2+data[i].s2*0.3+data[i].s3*0.5).toFixed(0);
+      cells[0].innerText = i+1;
+      cells[1].innerText = data[i].no;
+      cells[2].innerText = data[i].name;
+      cells[3].innerText = data[i].s1;
+      cells[4].innerText = data[i].s2;
+      cells[5].innerText = data[i].s3;
+      cells[6].innerText = final;
+      if(final<60){
+        rows[i+1].style.color="red";
+      }else {
+        rows[i+1].style.color="black";
+      }
+    }
+    var no = document.getElementById('no'); 
+    var name = document.getElementById('name');
+    var s1 = document.getElementById('s1');
+    var s2 = document.getElementById('s2');
+    var s3 = document.getElementById('s3');
+    var s4 = document.getElementById("s4");
+    no.value="";
+    name.value="";
+    s1.value="";
+    s2.value="";
+    s3.value="";
+    s4.innerText='';
+    initPieChart();
+  }
+  function initPieChart() {
+    var rows = document.getElementsByTagName("tr");
+    var data = [0, 0, 0, 0, 0];
+    for (var i = 1; i < rows.length; i++) {
+      var cells = rows[i].getElementsByTagName("td");
+      var final = parseFloat(cells[6].innerText); // 第七列是要用于饼图的数据
+      if (final >= 90) {
+        data[0]++;
+      } else if (final >= 80 && final < 90) {
+        data[1]++;
+      } else if (final >= 70 && final < 80) {
+        data[2]++;
+      } else if (final >= 60 && final < 70) {
+        data[3]++;
+      } else {
+        data[4]++;
+      }
+    }
+
+    // 获取饼图的 canvas 元素
+    var pieChartCanvas = document.getElementById("pieChart");
+    
+    // 检查是否已经存在 Chart 实例
+    var existingChart = Chart.getChart(pieChartCanvas);
+    if (existingChart) {
+      existingChart.destroy(); // 销毁现有的 Chart 实例
+    }
+
+    // 创建新的饼图实例
+    var pieChartContext = pieChartCanvas.getContext("2d");
+    new Chart(pieChartContext, {
+      type: "pie",
+      data: {
+        labels: ["90-100", "80-89", "70-79", "60-69", "<60"], // 替换为相应的标签
+        datasets: [{
+          data: data, // 使用表格数据
+          backgroundColor: ["#c02c38", "#eba0b3", "#9b1e64", "#45b787", "#2e317c"] 
+        }]
+      },
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: '成绩分布',
+            font: {
+              size: 20
+            }
+          },
+          legend: {
+            position: "bottom"
+          }
+        }
+      }
+    });
+  }
+  // function updatePieChart(){
+  //   var pieChartCanvas = document.getElementById("pieChart");
+  //   pieChartCanvas.innerHTML='';
+  //   initPieChart();
+  // }
+  function updateTableRow() {
+      var s1 = document.getElementById('s1');
+      var s2 = document.getElementById('s2');
+      var s3 = document.getElementById('s3');
+      var s4 = document.getElementById("s4");
+      // 获取输入框的值
+      var s1v = s1.value.trim();
+      var s2v = s2.value.trim();
+      var s3v = s3.value.trim();
+      if(s1v==null||s1v===''||s2v==null||s2v===''||s3v==null||s3v===''){
+        alert('输入框的内容不能为空');
+        return;
+      }
+      if(!((/^\d+$/.test(s1v) && s1v >= 0 && s1v <= 100)&&(/^\d+$/.test(s2v) && s2v >= 0 && s2v <= 100)&&(/^\d+$/.test(s3v) && s3v >= 0 && s3v <= 100))){
+        alert("成绩错误!请输入1至100之间的成绩。");
+        return;
+      }
+      var s4v = (s1v*0.2+s2v*0.3+s3v*0.5).toFixed(0);
+      // 将新值更新到表格中的记录
+      var cells = targetRow.getElementsByTagName('td');
+      if(s4v<60){
+        targetRow.style.color="red";
+      }else {
+        targetRow.style.color="black";
+      }
+      // 更新记录数据
+      cells[3].innerText = s1v;
+      cells[4].innerText = s2v;
+      cells[5].innerText = s3v;
+      cells[6].innerText = s4v;
+      if (s4v < 60) {
+        s4v = "<span style='color: red;'>" + s4v + "</span>"; // 设置 s4v 的颜色为红色
+      }
+      s4.innerHTML = "总评成绩: " + s4v;
+      // 在更新完表格数据后调用该函数
+      initPieChart();
+  }
+
+  </script>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="huangdou.jpg" alt="Logo">
+    </div>
+    <div class="title">黄成洺的网页设计作业
+      <div class="user-info">
+        <!-- 用户信息栏内容 -->
+        <img src="th.jpg" alt="Image">
+        <p>21软3-黄成洺<br><span class="myno">学号:2110817325</span></p>
+        <div class="search-box">
+          <!-- 搜索框和数据复位按钮 -->
+          <input type="text" placeholder="假装要撅你">
+          <button onclick="resetTable()" class="red-button">复位</button>
+        </div>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#" class="link1">主页</a></li>
+        <li><a href="#" class="link2">意见和建议</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <div class="data-display">
+      <!-- 数据展示区内容 -->
+      <table id="dataTable">
+      <thead>
+				<tr>
+					<th > </th>
+					<th >学号</th>
+					<th >姓名</th>
+					<th >平时成绩</th>
+					<th >期中作业</th>
+					<th >期末作业</th>
+					<th >总评成绩</th>
+				</tr>
+			</thead>
+      <tbody>
+      </tbody>
+      </table>
+    </div>
+    <div class="record-actions">
+      <!-- 数据操作区内容 -->
+      学号<input type="text" id="no" style="height: 25px;" readonly>
+      姓名<input type="text" id="name" style="height: 25px;" readonly><br><br>
+      平时成绩<input type="text" id="s1" required><br><br>
+      期中成绩<input type="text" id="s2" style="width: 100px;height: 25px;" required><br><br>
+      期末成绩<input type="text" id="s3" style="width: 100px;height: 25px;" required><br><br>
+      <div id="s4"></div>
+      <button onclick="updateTableRow()" class="blue-button">确定修改</button>
+    </div>
+    <div class="chart">
+      <!-- 图区内容 -->
+      <canvas id="pieChart"></canvas>
+    </div>
+  </main>
+  <footer>
+    Copyright &copy; 2023  黄成洺 All rights reserverd<br>完成时间 2023-05-29 20:28 UTC
+  </footer>
+</body>
+</html>

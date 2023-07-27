@@ -1,0 +1,2 @@
+webpackJsonp([1],{LuL2:function(e,t){},ThpC:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r={render:function(){var e=this.$createElement;return(this._self._c||e)("div",[this._v("这是设置")])},staticRenderFns:[]};var a=n("VU/8")({name:"Main3"},r,!1,function(e){n("LuL2")},"data-v-6c022f12",null);t.default=a.exports}});
+//# sourceMappingURL=1.7cda445d921bf176f18f.js.map
